@@ -61,3 +61,20 @@ instead of
 - use `className` instead of `class`
 - close every element
 - use brackets to enclose JSX - it makes it so that the JSX does not have to be in the same line as the `return` keyword
+
+## Nesting Components
+```js
+const Greeting = () => {
+    return (
+        <div>
+            <Person />
+            <Message />
+        </div>
+    )
+}
+
+const Person =  () => <h2>Victor Mike</h2>
+const Message = () => {
+    return <p>hello from me</p>
+}
+```
