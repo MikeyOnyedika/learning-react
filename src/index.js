@@ -1,18 +1,27 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import "./index.css";
 
-const Greeting = () => {
+
+async function getUsers(){
+    try{
+        return (await (await fetch('https://randomuser.me/api/?results=25')).json()).results
+    }catch(err){
+         return "error couldn't get data from api"
+    }
+}
+
+const users = getUsers().map(user => {
     return (
-        <div>
-            <Person />
-            <Message />
-        </div>
+        user
+    )
+})
+
+function Greeting(){
+    return (
+        <h1></h1>
     )
 }
 
-const Person =  () => <h2>Victor Mike</h2>
-const Message = () => {
-    return <p>hello from me</p>
-}
 
 ReactDom.render(<Greeting/>, document.getElementById('root'))
