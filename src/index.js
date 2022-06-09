@@ -1,27 +1,45 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+import React from "react";
+import ReactDom from "react-dom";
 import "./index.css";
 
-
-async function getUsers(){
-    try{
-        return (await (await fetch('https://randomuser.me/api/?results=25')).json()).results
-    }catch(err){
-         return "error couldn't get data from api"
-    }
+function BookList() {
+     return (
+          <section className="booklist">
+               {books.map((book) => (
+                    <Book key={book.id}  {...book} />
+               ))}
+          </section>
+     );
 }
 
-const users = getUsers().map(user => {
-    return (
-        user
-    )
-})
+const books = [
+     {    id: 1,
+          title: "shake and bake",
+          author: "mc",
+          downloads: 2,
+     },
+     {
+          id: 2, 
+          title: "Diamond maker",
+          author: "daniel",
+          downloads: 89,
+     },
+     {
+          id: 3,
+          title: "Canada coming",
+          author: "pan ed",
+          downloads: 89,
+     },
+];
 
-function Greeting(){
-    return (
-        <h1></h1>
-    )
-}
+const Book = (props) => {
+     return (
+          <article className="book">
+               <h1 className="title">{props.title}</h1>
+               <h4 className="author"> {props.author} </h4>
+               {props.children}
+          </article>
+     );
+};
 
-
-ReactDom.render(<Greeting/>, document.getElementById('root'))
+ReactDom.render(<BookList />, document.getElementById("root"));
