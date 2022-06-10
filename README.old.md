@@ -224,3 +224,142 @@ function BookList() {
      );
 }
 ```
+
+## Basic Event handling
+`onClick` and `onMouseOver` events
+```js
+const Book = (props) => {
+     const btnClickHandler = () => {
+          console.log(props.title);
+     };
+
+     const showName = (title) => console.log(title);
+
+     return (
+          <article className="book" onMouseOver={ () => {
+               showName(props.title)
+          }}>
+               <h1 className="title">{props.title}</h1>
+               {props.children}
+               <button onClick={btnClickHandler}>{props.title}</button>
+               <button onClick={ () => console.clear()}>Clear the console</button>
+          </article>
+     );
+};
+
+```
+
+## Hooks
+> Hooks are useful functions we can use to achieve specific functionality in React
+
+### useState hook
+This hook is used to manage a value that will be displayed in a React Component but which we also need to be able to update/change e.g the text in a header element inside a component.
+`useState()` takes a default value and returns an array of two elements. The first element is the `value` and the second element is a `function` that will be used to update that value. The data type of the value can be any valid javascript type; string, number, boolean, object, array
+A basic example
+```js
+import React from "react";
+function UseStateString() {
+     const [text, setText] = React.useState("hello me");
+
+     const changeText = () => {
+         if (text === 'hello me'){
+             setText('another me')
+         }else{
+             setText('hello me')
+         }
+     }
+
+     return (
+          <>
+               <h1>{text}</h1>
+               <button type="button" onClick={ changeText }>change text</button>
+          </>
+     );
+}
+```
+### some general notes on hooks
+-  They begin with `use` e.g `useState`, `useEffect`
+-  You can only call them inside a React component whose name that begins with capital letters
+-  You have to call them inside React component
+- They can't be called conditionally (i.e inside if() statements)
+
+### useState using array
+```js
+export default function UseStateArray(){
+    const p = [
+         { id: 1, name: "john" },
+         { id: 2, name: "james" },
+         { id: 3, name: "cassie" },
+         { id: 4, name: "meredith" },
+    ];
+     const [people, setPeople] = useState([...p]);
+
+    const deletePerson = (id) => {
+        const newPeople = people.filter(person => person.id !== id)
+        setPeople(newPeople)
+    }
+
+     return (
+          <div>
+               {people.map((person) => {  
+                    return (
+                         <>
+                              <h2>{person.name}</h2>
+                              <button type="button" onClick={()=> deletePerson(person.id)}>remove</button>
+                         </>
+                    );
+               })}
+          </div>
+     );
+};
+```
+
+### useState with object
+```js
+export default function UseStateObject() {
+  const [person, setPerson] = React.useState({name: 'vic', age: 21, message: 'hello'})
+
+  const changeMessage  = () => {
+    //   use a spread operator on the current person object to 
+    //   add all its property/values into the new object created, then override the chosen property(ies)
+    //   If you don't do this, all the other values from the current object will lost after the update
+      setPerson({...person, message: "me hello"})
+  }
+
+  return (
+    <div>
+        <h3>{person.name}</h3>
+        <h4>{person.age}</h4>
+        <h3>{person.message}</h3>
+        <button type='button' onClick={changeMessage}>change message</button>
+    </div>
+  )
+}
+```
+
+### useState with number
+```js
+export default function () {
+     const [value, setValue] = React.useState(0);
+
+     const incrementCount = () => {
+     //     setValue of the useState is an asynchronous function.
+     // Passing a function instead of just the new value is useful 
+     // when you want to make sure that multiple calls to setValue()
+     // will wait in line and not execute in parallel. It also give us acces to
+     // the previous value of state, maybe we may want to modifiy and return that 
+     // as the new value
+          setValue((prevValue) => {
+               console.log('increment called')
+              return ++prevValue
+          })
+     }
+     return (
+          <>
+               <h2>{value}</h2>
+               <button type="button" onClick={incrementCount}>increase</button>
+          </>
+     );
+```
+
+### useEffect Hook
