@@ -184,8 +184,6 @@ const Book = (props) => {
 ```
 
 ## Rendering a list in a component
-
-
 React knows how to render the content of a list when you just pass in the name of the list, provided the list is not a list of objects.
 Use the map function of array to return a JSX element for each element in the array.
 Each list item should have a unique `key` prop with a unique id or React will complain
@@ -254,6 +252,7 @@ const Book = (props) => {
 
 ### useState hook
 This hook is used to manage a value that will be displayed in a React Component but which we also need to be able to update/change e.g the text in a header element inside a component.
+It triggers re-rendering so that the new value can appear on the DOM
 `useState()` takes a default value and returns an array of two elements. The first element is the `value` and the second element is a `function` that will be used to update that value. The data type of the value can be any valid javascript type; string, number, boolean, object, array
 A basic example
 ```js
@@ -363,3 +362,62 @@ export default function () {
 ```
 
 ### useEffect Hook
+useEffect() by default runs after every re-render. It is used to run side effects which are things to be done outside a component e.g data fetching, signing up for subscription, etc.
+```js
+const UseEffectBasics = () => {
+    const [value, setValue] = useState(0);
+    const [name, setName]  = useState('vic');
+
+    // the callback passed is by default run whenever a the component is re-rendered
+    useEffect(() => {
+        document.title = `New messages (${value})`;
+        console.log('document update')
+    })
+
+    // passing an empty array as the second argument to useEffect will make it run only the first time the component is rendered
+    useEffect(() => {
+        console.log('empty use effect')
+    }, [])
+
+    // passing state values inside the array will make the useEffect to run first time the component is rendered and everytime any of the states in the array is re-rendered. These states are the dependencies for the useEffect
+    useEffect(() => {
+        console.log(name + ' from dep')
+        console.log(value + ' from dep')
+    }, [value, name])
+
+  return (
+    <>
+        <h1>{value}</h1>
+        <button type="button" onClick={() => setValue(value + 1)}>click me</button>
+        <button type='button' onClick={() => setName(name + value)}>change name</button>
+    </>
+  )
+}
+```
+
+### using the useEffect() cleanup function
+this is just a function that useEffect can return. Once useEffect runs for the first time, this function is returned and will be run before the useEffect() is run again. You can put code that cleans up stuff like removing eventlisteners here before they are setup again when useEffect runs
+```js
+const UseEffectCleanup = () => {
+     const [size, setSize] = useState(window.innerWidth);
+
+     const checkSize = () => {
+          setSize(window.innerWidth);
+     };
+     useEffect(() => {
+          window.addEventListener("resize", checkSize);
+
+         // the clean up function  
+          return () => {
+               window.removeEventListener("resize", checkSize);
+          };
+     });
+
+     return (
+          <div>
+               <h2>Window Width</h2>
+               <h2>{size} px</h2>
+          </div>
+     );
+};
+```
