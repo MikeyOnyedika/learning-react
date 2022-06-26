@@ -54,9 +54,9 @@ function Greeting() {
 
 ### install ES7 React/Redux/GraphQl/React-Native snippets extension
 
-## JSX rules - it is still javascript
+## JSX rules -
 
--    return single element from a component
+-    return single element from a component just like normal javascript
 -    instead of wrapping everything in a div, use a fragment
 
 ```jsx
@@ -304,7 +304,7 @@ export default function UseStateArray(){
                     return (
                          <>
                               <h2>{person.name}</h2>
-                              <button type="button" onClick={()=> deletePerson(person.id)}>remove</button>
+                              <button type="button" onClick={ ()=> deletePerson(person.id) }>remove</button>
                          </>
                     );
                })}
@@ -421,3 +421,5 @@ const UseEffectCleanup = () => {
      );
 };
 ```
+### Conditional Rendering
+This means setting up the component to render depending on the value of some kind of state
